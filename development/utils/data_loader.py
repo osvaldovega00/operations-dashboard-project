@@ -61,7 +61,7 @@ def notif_count():
     order_df = pd.read_excel(notif_file)
     order_df = order_df[order_df['Main WorkCtr'].str.contains('ZIBE1', na=False)]
     total = order_df.shape[0]
-    closed = order_df[order_df['System status'].str.contains('NOCO')].shape[0]
+    closed = order_df[order_df['System status'].str.contains('DSCL')].shape[0]
     count = int(closed/total*100)
     total = f'{closed}/{total} = {count}%'
     return total
