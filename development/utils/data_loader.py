@@ -1,5 +1,7 @@
 import pandas as pd
 from pathlib import Path
+from utils.gcs_loader import download_order_dataset
+
 
 def load_orders(order_type, end_date):
     """Load and filter SAP work orders based on order type and end date column.
@@ -10,7 +12,7 @@ def load_orders(order_type, end_date):
         pd.DataFrame: A filtered DataFrame containing only the specified order type,
         with valid end dates formatted as 'YYYY-MM'.
 """
-    order_file = Path(__file__).resolve().parent.parent / "data" / "SAP_Report.xlsx"
+    order_file = download_order_dataset('SAP_Report.xlsx')
     order_df = pd.read_excel(order_file)
     filtered_df = order_df[order_df['Main WorkCtr'].str.contains('ZIBE1', na=False)]
     filtered_df = filtered_df[filtered_df['Order Type'] == order_type]
@@ -27,7 +29,7 @@ def load_notifications():
         pd.DataFrame: A filtered DataFrame containing only the specified order type,
         with valid end dates formatted as 'YYYY-MM'.
 """
-    notif_file = Path(__file__).resolve().parent.parent / 'data' / 'SAP_Notification.xlsx'
+    notif_file = download_order_dataset('SAP_Notification.xlsx')
     notif_df = pd.read_excel(notif_file)
     filtered_notif_df = notif_df[notif_df['Main WorkCtr'].str.contains('ZIBE1', na=False)]
     filtered_notif_df['Date_MMMYY'] = filtered_notif_df['Notif. Date'].dt.strftime('%b-%y')
@@ -42,7 +44,7 @@ def orders_count(order_type):
     Returns:
         String that contains the closed vs total amount and its percentage for completion KPI reference.
 """
-    order_file = Path(__file__).resolve().parent.parent / 'data' / 'SAP_Report.xlsx'
+    order_file = download_order_dataset('SAP_Report.xlsx')
     order_df = pd.read_excel(order_file)
     filtered_df = order_df[order_df['Main WorkCtr'].str.contains('ZIBE1')]
     filtered_df = filtered_df[filtered_df['Order Type'] == order_type]
@@ -57,7 +59,7 @@ def notif_count():
     Returns:
         String that contains the closed vs total amount and its percentage for completion KPI reference.
 """
-    notif_file = Path(__file__).resolve().parent.parent / 'data' / 'SAP_Notification.xlsx'
+    notif_file = download_order_dataset('SAP_Notification.xlsx')
     order_df = pd.read_excel(notif_file)
     order_df = order_df[order_df['Main WorkCtr'].str.contains('ZIBE1', na=False)]
     total = order_df.shape[0]
