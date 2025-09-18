@@ -20,3 +20,5 @@ steps:
       - '--allow-unauthenticated'
       - '--service-account'
       - 'cloud-run-runtime@operations-dashboard-472303.iam.gserviceaccount.com'
+
+logsBucket: 'gs://operations-dashboard-472303_cloudbuild'
